@@ -1,4 +1,4 @@
-package com.ansssiaz.cinemaapp.ui.theme
+package com.ansssiaz.component.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

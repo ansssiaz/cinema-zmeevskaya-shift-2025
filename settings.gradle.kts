@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Cinema App"
 include(":app")
- 
+include(":component:theme")
