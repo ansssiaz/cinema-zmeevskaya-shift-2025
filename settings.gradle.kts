@@ -22,5 +22,5 @@ dependencyResolutionManagement {
 rootProject.name = "Cinema App"
 include(":app")
 include(":component:theme")
-include(":feature")
 include(":feature:list-of-films")
+include(":shared:film")

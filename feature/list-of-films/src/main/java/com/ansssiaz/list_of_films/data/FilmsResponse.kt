@@ -1,5 +1,8 @@
 package com.ansssiaz.list_of_films.data
 
+import com.ansssiaz.list_of_films.domain.Film
+import com.ansssiaz.shared.film.domain.getFullImageUrl
+import com.ansssiaz.shared.film.domain.getYearFromReleaseDate
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -18,19 +21,40 @@ data class FilmModel(
     val actors: List<Person>,
     val directors: List<Person>,
     val runtime: Int,
-    val ageRating: String,
+    val ageRating: AgeRating,
     val genres: List<String>,
     val userRatings: UserRatings,
     val img: String,
     val country: Country
 )
 
+enum class AgeRating {
+    G,
+    PG,
+    PG13,
+    R,
+    NC17,
+}
+
+fun AgeRating.toDisplayString() = when (this) {
+    AgeRating.G -> "0+"
+    AgeRating.PG -> "6+"
+    AgeRating.PG13 -> "12+"
+    AgeRating.R -> "16+"
+    AgeRating.NC17 -> "18+"
+}
+
 @Serializable
 data class Person(
     val id: String,
-    val professions: List<String>,
+    val professions: List<Professions>,
     val fullName: String
 )
+
+enum class Professions {
+    ACTOR,
+    DIRECTOR
+}
 
 @Serializable
 data class UserRatings(
@@ -45,3 +69,14 @@ data class Country(
     val code2: String,
     val name: String
 )
+
+fun FilmModel.toFilm() = Film(
+    id = id.toLong(),
+    name = name,
+    ageRating = ageRating.toDisplayString(),
+    genres = genres,
+    country = country.name,
+    releaseYear = getYearFromReleaseDate(releaseDate),
+    kinopoiskRating = userRatings.kinopoisk.toInt(),
+    img = getFullImageUrl(img)
+    )

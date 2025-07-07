@@ -47,6 +47,7 @@ android {
 dependencies {
     implementation(project(":component:theme"))
     implementation(project(":feature:list-of-films"))
+    implementation(project(":shared:film"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

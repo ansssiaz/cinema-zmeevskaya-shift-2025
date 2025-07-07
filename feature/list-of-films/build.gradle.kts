@@ -36,6 +36,7 @@ android {
 
 dependencies {
 
+    implementation(project(":shared:film"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
 
