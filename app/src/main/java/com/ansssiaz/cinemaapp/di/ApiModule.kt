@@ -1,6 +1,7 @@
 package com.ansssiaz.cinemaapp.di
 
 import com.ansssiaz.cinemaapp.BuildConfig
+import com.ansssiaz.list_of_films.data.FilmsApi
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
@@ -29,7 +30,11 @@ private fun provideRetrofit(
         .addConverterFactory(json.asConverterFactory(contentType))
         .build()
 
+private fun provideFilmsApi(retrofit: Retrofit): FilmsApi =
+    retrofit.create(FilmsApi::class.java)
+
 val apiModule = module {
     single { provideOkHttpClient() }
     single { provideRetrofit(get()) }
+    single { provideFilmsApi(get()) }
 }
