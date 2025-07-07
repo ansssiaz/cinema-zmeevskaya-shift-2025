@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">Cinema App</string>
     <string name="network_error">Network connection error! Please, check your connection</string>
     <string name="server_error">An error occurred when receiving the data from the server</string>
     <string name="unknown_error">Unknown error</string>

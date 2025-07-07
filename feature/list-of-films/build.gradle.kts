@@ -3,6 +3,9 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.serialization)
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -35,7 +38,6 @@ android {
 }
 
 dependencies {
-
     implementation(project(":shared:film"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

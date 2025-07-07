@@ -1,4 +1,4 @@
-package com.ansssiaz.list_of_films.domain
+package com.ansssiaz.feature.list_of_films.domain
 
 data class Film(
     val id: Long,

@@ -1,6 +1,6 @@
-package com.ansssiaz.list_of_films.data
+package com.ansssiaz.feature.list_of_films.data
 
-import com.ansssiaz.list_of_films.domain.Film
+import com.ansssiaz.feature.list_of_films.domain.Film
 import com.ansssiaz.shared.film.domain.getFullImageUrl
 import com.ansssiaz.shared.film.domain.getYearFromReleaseDate
 import kotlinx.serialization.Serializable
