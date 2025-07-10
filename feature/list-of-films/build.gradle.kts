@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.serialization)
@@ -9,26 +9,19 @@ plugins {
 }
 
 android {
-    namespace = "com.ansssiaz.cinemaapp"
+    namespace = "com.ansssiaz.list_of_films"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.ansssiaz.cinemaapp"
         minSdk = 26
-        targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
         }
     }
     compileOptions {
@@ -38,19 +31,14 @@ android {
     kotlin {
         compilerOptions.jvmTarget.set(JvmTarget.JVM_11)
     }
-    buildFeatures {
-        compose = true
-        buildConfig = true
-    }
 }
 
 dependencies {
     implementation(project(":component:theme"))
-    implementation(project(":feature:list-of-films"))
+    implementation(project(":component:ui-components"))
     implementation(project(":shared:film"))
-
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.appcompat)
 
     //Compose
     implementation(libs.androidx.activity.compose)
@@ -84,11 +72,4 @@ dependencies {
 
     //Сериализация JSON
     implementation(libs.kotlinx.serialization.json)
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.test.manifest)
 }
