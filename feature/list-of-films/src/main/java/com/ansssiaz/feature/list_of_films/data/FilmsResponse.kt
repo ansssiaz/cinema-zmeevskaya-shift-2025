@@ -65,7 +65,7 @@ data class UserRatings(
 @Serializable
 data class Country(
     val id: Int,
-    val ode: String,
+    val code: String,
     val code2: String,
     val name: String
 )
@@ -77,6 +77,6 @@ fun FilmModel.toFilm() = Film(
     genres = genres,
     country = country.name,
     releaseYear = getYearFromReleaseDate(releaseDate),
-    kinopoiskRating = userRatings.kinopoisk.toInt(),
-    img = getFullImageUrl(img)
+    kinopoiskRating = userRatings.kinopoisk.toFloat(),
+    image = getFullImageUrl(img)
     )

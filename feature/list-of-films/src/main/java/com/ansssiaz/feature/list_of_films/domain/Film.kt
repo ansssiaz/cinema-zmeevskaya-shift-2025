@@ -7,6 +7,6 @@ data class Film(
     val genres: List<String>,
     val country: String,
     val releaseYear: String,
-    val kinopoiskRating: Int,
-    val img: String
+    val kinopoiskRating: Float,
+    val image: String
 )

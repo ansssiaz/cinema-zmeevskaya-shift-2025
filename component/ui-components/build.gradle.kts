@@ -4,12 +4,10 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.serialization)
-    alias(libs.plugins.ksp)
 }
 
 android {
-    namespace = "com.ansssiaz.list_of_films"
+    namespace = "com.ansssiaz.component.ui_components"
     compileSdk = 36
 
     defaultConfig {
@@ -38,42 +36,14 @@ android {
 }
 
 dependencies {
-    implementation(project(":component:theme"))
-    implementation(project(":component:ui-components"))
-    implementation(project(":shared:film"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
 
     //Compose
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.compose.navigation)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.material3)
-
-    //Preview для Compose
-    implementation(libs.androidx.ui.tooling.preview)
-    debugImplementation(libs.androidx.ui.tooling)
-
-    //Загрузка изображений
-    implementation(libs.coil)
-
-    //ViewModel
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-
-    //DI
-    implementation(libs.koin.android.compose)
-    implementation(libs.koin.android)
-    implementation(libs.koin.core)
-
-    //Работа с сетью
-    implementation(platform(libs.okhttp.bom))
-    implementation(libs.okhttp)
-    implementation(libs.logging.interceptor)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit2.kotlinx.serialization.converter)
-
-    //Сериализация JSON
-    implementation(libs.kotlinx.serialization.json)
 }
