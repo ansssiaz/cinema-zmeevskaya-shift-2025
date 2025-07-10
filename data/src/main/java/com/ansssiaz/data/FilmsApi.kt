@@ -1,4 +1,4 @@
-package com.ansssiaz.feature.list_of_films.data
+package com.ansssiaz.data
 
 import retrofit2.http.GET
 
