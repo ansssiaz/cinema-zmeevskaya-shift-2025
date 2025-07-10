@@ -48,10 +48,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.material3)
 
-    //Preview для Compose
-    implementation(libs.androidx.ui.tooling.preview)
-    debugImplementation(libs.androidx.ui.tooling)
-
     //Загрузка изображений
     implementation(libs.coil)
 

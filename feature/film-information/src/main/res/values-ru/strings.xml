@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="about_film">О фильме</string>
+    <string name="continue_button">Продолжить</string>
+    <string name="film_image_description">Film description</string>
+</resources>

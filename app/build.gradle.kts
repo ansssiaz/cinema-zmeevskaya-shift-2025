@@ -47,6 +47,7 @@ android {
 dependencies {
     implementation(project(":component:theme"))
     implementation(project(":feature:list-of-films"))
+    implementation(project(":feature:film-information"))
     implementation(project(":shared:film"))
     implementation(project(":data"))
 

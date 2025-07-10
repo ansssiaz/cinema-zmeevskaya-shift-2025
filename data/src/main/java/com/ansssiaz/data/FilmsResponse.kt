@@ -9,6 +9,12 @@ data class FilmsResponse(
 )
 
 @Serializable
+data class FilmResponse(
+    val success: Boolean,
+    val film: FilmModel
+)
+
+@Serializable
 data class FilmModel(
     val id: String,
     val name: String,

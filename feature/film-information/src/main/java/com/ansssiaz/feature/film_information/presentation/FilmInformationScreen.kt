@@ -1,6 +1,7 @@
-package com.ansssiaz.feature.list_of_films.presentation
+package com.ansssiaz.feature.film_information.presentation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,35 +10,30 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextLayoutResult
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -47,32 +43,27 @@ import com.ansssiaz.component.theme.BG_Secondary
 import com.ansssiaz.component.theme.Cinema_Hover_Primary
 import com.ansssiaz.component.theme.Text_Content
 import com.ansssiaz.component.ui_components.ratingBar.RatingBar
-import com.ansssiaz.feature.list_of_films.domain.Film
-import com.ansssiaz.feature.list_of_films.presentation.viewmodel.FilmsViewModel
-import com.ansssiaz.feature.list_of_films.util.getErrorText
-import com.ansssiaz.list_of_films.R
-import kotlinx.coroutines.launch
+import com.ansssiaz.feature.film_information.R
+import com.ansssiaz.feature.film_information.domain.Film
+import com.ansssiaz.feature.film_information.presentation.viewmodel.FilmViewModel
 import org.koin.androidx.compose.koinViewModel
+import org.koin.core.parameter.parametersOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ListOfFilmsScreen(
-    onDetailsClick: (Film) -> Unit,
+fun FilmInformationScreen(
+    filmId: Long
 ) {
-    val filmsViewModel: FilmsViewModel = koinViewModel()
-    val state by filmsViewModel.state.collectAsStateWithLifecycle()
-    val snackbarHostState = remember { SnackbarHostState() }
-    val coroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
-    val action = stringResource(R.string.snackbar_action)
+    val filmViewModel: FilmViewModel = koinViewModel(parameters = { parametersOf(filmId) })
+    val state by filmViewModel.state.collectAsStateWithLifecycle()
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Text(
-                        text = stringResource(R.string.poster),
-                        style = androidx.compose.ui.text.TextStyle(
+                        text = stringResource(R.string.about_film),
+                        style = TextStyle(
                             fontWeight = FontWeight.Bold,
                             fontSize = 24.sp,
                             lineHeight = 32.sp,
@@ -83,71 +74,23 @@ fun ListOfFilmsScreen(
             )
         },
         modifier = Modifier.fillMaxSize(),
-        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { paddingValues ->
-        LaunchedEffect(state.isError) {
-            if (state.isError) {
-                val errorText =
-                    state.status.throwableOrNull?.getErrorText(context).toString()
-
-                coroutineScope.launch {
-                    val result = snackbarHostState.showSnackbar(
-                        message = errorText,
-                        actionLabel = action,
-                        duration = SnackbarDuration.Indefinite
-                    )
-                    if (result == SnackbarResult.ActionPerformed) {
-                        filmsViewModel.getFilms()
-                    }
-                }
-            }
-        }
-
-        when {
-            state.isLoading -> {
-                Box(
-                    Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            else -> {
-                FilmsList(
-                    films = state.films,
-                    onDetailsClick = onDetailsClick,
-                    modifier = Modifier.padding(paddingValues)
-                )
-            }
+        state.film?.let { film ->
+            FilmContent(
+                film = film,
+                modifier = Modifier.padding(paddingValues)
+            )
         }
     }
 }
 
 @Composable
-fun FilmsList(
-    films: List<Film>?,
-    modifier: Modifier = Modifier,
-    onDetailsClick: (Film) -> Unit = {}
-) {
-    LazyColumn(
-        modifier = modifier
-    ) {
-        items(films ?: emptyList()) { film ->
-            FilmItem(film = film, onDetailsClick = { onDetailsClick(film) })
-        }
-    }
-}
-
-@Composable
-fun FilmItem(
+fun FilmContent(
     film: Film,
-    onDetailsClick: (filmId: Long) -> Unit
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
@@ -182,7 +125,7 @@ fun FilmItem(
                 Column {
                     Text(
                         text = film.genres.first(),
-                        style = androidx.compose.ui.text.TextStyle(
+                        style = TextStyle(
                             fontWeight = FontWeight.Medium,
                             fontSize = 14.sp,
                             lineHeight = 14.sp,
@@ -192,7 +135,7 @@ fun FilmItem(
                     )
                     Text(
                         text = "${film.country}, ${film.releaseYear}",
-                        style = androidx.compose.ui.text.TextStyle(
+                        style = TextStyle(
                             fontWeight = FontWeight.Normal,
                             fontSize = 14.sp,
                             lineHeight = 14.sp,
@@ -212,7 +155,7 @@ fun FilmItem(
         ) {
             Text(
                 text = "${film.name} (${film.ageRating})",
-                style = androidx.compose.ui.text.TextStyle(
+                style = TextStyle(
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 20.sp,
                     lineHeight = 24.sp,
@@ -222,7 +165,7 @@ fun FilmItem(
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = "Фильм",
-                style = androidx.compose.ui.text.TextStyle(
+                style = TextStyle(
                     color = Text_Content,
                     fontWeight = FontWeight.Normal,
                     fontSize = 14.sp,
@@ -237,7 +180,7 @@ fun FilmItem(
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = "Kinopoisk - ${film.kinopoiskRating}",
-                style = androidx.compose.ui.text.TextStyle(
+                style = TextStyle(
                     color = Text_Content,
                     fontWeight = FontWeight.Normal,
                     fontSize = 14.sp,
@@ -247,10 +190,14 @@ fun FilmItem(
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
+
+        ExpandableText(film.description)
+
+        Spacer(modifier = Modifier.height(24.dp))
 
         Button(
-            onClick = { onDetailsClick(film.id) },
+            onClick = { },
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth()
@@ -262,13 +209,49 @@ fun FilmItem(
             shape = RoundedCornerShape(16.dp)
         ) {
             Text(
-                text = stringResource(R.string.more_details),
-                style = androidx.compose.ui.text.TextStyle(
+                text = stringResource(R.string.continue_button),
+                style = TextStyle(
                     fontWeight = FontWeight.SemiBold,
                     fontSize = 16.sp,
                     lineHeight = 24.sp,
                     letterSpacing = 0.sp
                 )
+            )
+        }
+    }
+}
+
+@Composable
+fun ExpandableText(text: String) {
+    var expanded by remember { mutableStateOf(false) }
+    var textLayoutResult by remember { mutableStateOf<TextLayoutResult?>(null) }
+
+    val textToShow = if (expanded) text else text
+
+    Column {
+        Text(
+            text = textToShow,
+            maxLines = if (expanded) Int.MAX_VALUE else 6,
+            overflow = TextOverflow.Ellipsis,
+            style = TextStyle(
+                color = Text_Content,
+                fontWeight = FontWeight.Normal,
+                fontSize = 16.sp,
+                lineHeight = 24.sp,
+                letterSpacing = 0.sp
+            ),
+            onTextLayout = { textLayoutResult = it }
+        )
+
+        if (!expanded && textLayoutResult?.hasVisualOverflow == true) {
+            Text(
+                text = "раскрыть",
+                color = Text_Content,
+                modifier = Modifier
+                    .clickable { expanded = true }
+                    .padding(top = 4.dp),
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
             )
         }
     }
