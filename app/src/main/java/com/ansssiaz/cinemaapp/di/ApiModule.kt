@@ -15,10 +15,15 @@ private val contentType = "application/json".toMediaType()
 private val json = Json { ignoreUnknownKeys = true }
 
 private fun provideOkHttpClient() = OkHttpClient.Builder()
-    .addInterceptor(HttpLoggingInterceptor().apply {
-        level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
-        else HttpLoggingInterceptor.Level.NONE
-    })
+    .addInterceptor(
+        HttpLoggingInterceptor().apply {
+            level = if (BuildConfig.DEBUG) {
+                HttpLoggingInterceptor.Level.BODY
+            } else {
+                HttpLoggingInterceptor.Level.NONE
+            }
+        }
+    )
     .build()
 
 private fun provideRetrofit(
