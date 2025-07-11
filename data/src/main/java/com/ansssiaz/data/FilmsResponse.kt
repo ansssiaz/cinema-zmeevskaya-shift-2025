@@ -1,14 +1,17 @@
-package com.ansssiaz.feature.list_of_films.data
+package com.ansssiaz.data
 
-import com.ansssiaz.feature.list_of_films.domain.Film
-import com.ansssiaz.shared.film.domain.getFullImageUrl
-import com.ansssiaz.shared.film.domain.getYearFromReleaseDate
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class FilmsResponse(
     val success: Boolean,
     val films: List<FilmModel>
+)
+
+@Serializable
+data class FilmResponse(
+    val success: Boolean,
+    val film: FilmModel
 )
 
 @Serializable
@@ -69,14 +72,3 @@ data class Country(
     val code2: String,
     val name: String
 )
-
-fun FilmModel.toFilm() = Film(
-    id = id.toLong(),
-    name = name,
-    ageRating = ageRating.toDisplayString(),
-    genres = genres,
-    country = country.name,
-    releaseYear = getYearFromReleaseDate(releaseDate),
-    kinopoiskRating = userRatings.kinopoisk.toFloat(),
-    image = getFullImageUrl(img)
-    )

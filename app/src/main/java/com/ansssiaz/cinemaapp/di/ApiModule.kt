@@ -1,7 +1,7 @@
 package com.ansssiaz.cinemaapp.di
 
 import com.ansssiaz.cinemaapp.BuildConfig
-import com.ansssiaz.feature.list_of_films.data.FilmsApi
+import com.ansssiaz.data.FilmsApi
 import com.ansssiaz.shared.film.core.BASE_URL
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json

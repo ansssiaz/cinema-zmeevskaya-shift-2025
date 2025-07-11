@@ -144,7 +144,7 @@ fun FilmsList(
 @Composable
 fun FilmItem(
     film: Film,
-    onDetailsClick: () -> Unit
+    onDetailsClick: (filmId: Long) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -250,7 +250,7 @@ fun FilmItem(
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(
-            onClick = { onDetailsClick() },
+            onClick = { onDetailsClick(film.id) },
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth()

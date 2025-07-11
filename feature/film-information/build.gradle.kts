@@ -1,34 +1,25 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.serialization)
-    alias(libs.plugins.ksp)
 }
 
 android {
-    namespace = "com.ansssiaz.cinemaapp"
+    namespace = "com.ansssiaz.feature.film_information"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.ansssiaz.cinemaapp"
         minSdk = 26
-        targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
         }
     }
     compileOptions {
@@ -38,21 +29,16 @@ android {
     kotlin {
         compilerOptions.jvmTarget.set(JvmTarget.JVM_11)
     }
-    buildFeatures {
-        compose = true
-        buildConfig = true
-    }
 }
 
 dependencies {
     implementation(project(":component:theme"))
-    implementation(project(":feature:list-of-films"))
-    implementation(project(":feature:film-information"))
+    implementation(project(":component:ui-components"))
     implementation(project(":shared:film"))
     implementation(project(":data"))
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.appcompat)
 
     //Compose
     implementation(libs.androidx.activity.compose)
@@ -72,21 +58,5 @@ dependencies {
     implementation(libs.koin.android.compose)
     implementation(libs.koin.android)
     implementation(libs.koin.core)
-
-    //Работа с сетью
-    implementation(platform(libs.okhttp.bom))
-    implementation(libs.okhttp)
-    implementation(libs.logging.interceptor)
-    implementation(libs.retrofit)
-    implementation(libs.retrofit2.kotlinx.serialization.converter)
-
-    //Сериализация JSON
-    implementation(libs.kotlinx.serialization.json)
-
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.compose.material)
 }
